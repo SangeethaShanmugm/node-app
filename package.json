@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/SangeethaShanmugm/node-app/issues"
   },
-  "homepage": "https://github.com/SangeethaShanmugm/node-app#readme"
+  "homepage": "https://github.com/SangeethaShanmugm/node-app#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
