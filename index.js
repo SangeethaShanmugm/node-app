@@ -46,3 +46,5 @@ const users=[
    ]
 
    console.log(users.map(user =>user.name))
+
+   console.log(process.argv);
