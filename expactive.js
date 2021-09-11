@@ -120,21 +120,26 @@ const product = [
 
 
 async function createConnection(){
-    const MONGO_URL = "mongodb+srv://sangeetha:<pass>@cluster0.scjhy.mongodb.net/contestants?retryWrites=true&w=majority";
+    const MONGO_URL = "mongodb+srv://sangeetha:sangeetha@cluster0.scjhy.mongodb.net/contestants?retryWrites=true&w=majority";
     const client = new MongoClient(MONGO_URL) ;
 
     try{
         await client.connect();
- //insert values to db product
-        const result = await client.db("product").collection("productdbvalue").insertMany(product);
 
-        console.log(" Inserted successfully", result);
+        
         
         console.log("Successfully Connected");
     }catch(err){
         console.log(err);
     }
     }
+
+     //insert values to db product
+async function insertProduct(client , product){
+    const result = await client.db("product").collection("productdbvalue").insertMany(product);
+
+    console.log(" Inserted successfully", result);
+}
 
 createConnection();
 
