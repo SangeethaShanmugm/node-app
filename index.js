@@ -45,7 +45,11 @@ const users=[
     }
    ]
 
-   const keyName= process.argv[2];
-   console.log(users.map(user =>user[keyName]))
+//    const keyName= process.argv[2];
+//    console.log(users.map(user =>user[keyName]))
 
-   console.log(process.argv);
+//    console.log(process.argv);
+
+console.log(users.map(user =>user.avatar))
+
+console.log(process.argv)

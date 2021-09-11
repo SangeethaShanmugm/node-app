@@ -2,47 +2,68 @@ const express = require("express");
 const app = express();
 const PORT=5000;
 
-const poll=[
-    {
-     "company": "Apple",
-     "color": "black",
-     "content": "us company"
-    },
-    {
-     "company": "Samsung",
-     "color": "skyblue",
-     "content": "china company"
-    },
-    {
-     "company": "MI",
-     "color": "orange",
-     "content": " indian company"
-    },
-    {
-     "company": "Oneplus",
-     "color": "red",
-     "content": "us company"
-    },
-    {
-     "company": "Moto",
-     "color": "grey",
-     "content": "us company"
-    },
-    {
-     "company": "Infinix",
-     "color": "red",
-     "content": "China based Company",
-     "id": "NaN"
-    }
+const user=[
+    
+        {
+         "createdAt": "2021-08-27T02:16:01.017Z",
+         "name": "Roger Bayer",
+         "avatar": "https://cdn.fakercloud.com/avatars/polarity_128.jpg",
+         "id": "1"
+        },
+        {
+         "createdAt": "2021-08-27T01:04:32.249Z",
+         "name": "Nellie Jenkins",
+         "avatar": "https://cdn.fakercloud.com/avatars/ecommerceil_128.jpg",
+         "id": "2"
+        },
+        {
+         "createdAt": "2021-08-26T17:21:02.859Z",
+         "name": "Hilda Harber",
+         "avatar": "https://cdn.fakercloud.com/avatars/eyronn_128.jpg",
+         "id": "3"
+        },
+        {
+         "createdAt": "2021-08-26T14:27:00.864Z",
+         "name": "Kelley Howe",
+         "avatar": "https://cdn.fakercloud.com/avatars/matthewkay__128.jpg",
+         "id": "4"
+        },
+        {
+         "createdAt": "2021-08-26T21:30:55.783Z",
+         "name": "Leigh Windler",
+         "avatar": "https://cdn.fakercloud.com/avatars/rohixx_128.jpg",
+         "id": "5"
+        },
+        {
+         "createdAt": "2021-08-26T18:32:52.316Z",
+         "name": "Lloyd Feeney",
+         "avatar": "https://cdn.fakercloud.com/avatars/mactopus_128.jpg",
+         "id": "6"
+        },
+        {
+         "createdAt": "2021-08-26T18:07:52.914Z",
+         "name": "Shawna Dickinson",
+         "avatar": "https://cdn.fakercloud.com/avatars/emmandenn_128.jpg",
+         "id": "7"
+        }
+       
    ]
 
 app.get("/", (request, response)=>{
-    response.send("Hello I am a Developer in Product based company");
+    response.send("Hello I am a Senior Developer in Google USA");
     });
 
-app.get("/poll", (request, response)=>{
-        response.send(poll);
+app.get("/user", (request, response)=>{
+        response.send(user);
         });
+
+        
+app.get("/user/:id", (request, response)=>{
+    const id=request.params.id;
+    const contestant= user.filter((data)=>data.id === id);
+    console.log(id, contestant);
+    response.send(contestant);
+    });
 
 
     app.listen(PORT, () => console.log("The Server is started in", PORT));
