@@ -143,8 +143,8 @@ async function createConnection(){
         return result;
     }
 
-    async function getProducts(client , id){
-        const result = await client.db("product").collection("productdbvalue").find({id: { $gt :2} }).toArray();
+    async function getProducts(client , filter){
+        const result = await client.db("product").collection("productdbvalue").find(filter).toArray();
         console.log("Successfully Connected", result);
         return result;
     }
@@ -172,10 +172,18 @@ app.get("/", (request, response)=>{
 
 app.get("/product", async (request, response)=>{
     const client = await  createConnection();
-   const products = await getProducts(client);
+   const products = await getProducts(client, { });
     response.send(products);
 });
 
+//search by name
+
+app.get("/product/name/:productname", async (request, response)=>{
+    const productname= request.params.productname;
+    const client = await  createConnection();
+   const products = await getProducts(client, { product : productname});
+    response.send(products);
+});
 
         
 app.get("/product/:id", async (request, response)=>{
