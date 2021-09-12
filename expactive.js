@@ -125,21 +125,42 @@ async function createConnection(){
 
     try{
         await client.connect();
-
+        return client;
+        // const result = await client .db("user").collection("userdata").insertMany(product);
+        // getProductById(client, "4");
         
         
-        console.log("Successfully Connected");
+        console.log("Successfully Connected", result);
     }catch(err){
         console.log(err);
     }
     }
 
-     //insert values to db product
-async function insertProduct(client , product){
-    const result = await client.db("product").collection("productdbvalue").insertMany(product);
+    //Find the id
+    async function getProductById(client , id){
+        const result = await client.db("product").collection("productdbvalue").findOne({ id : id});
+        console.log("Successfully Connected", result);
+        return result;
+    }
 
-    console.log(" Inserted successfully", result);
-}
+    async function getProducts(client , id){
+        const result = await client.db("product").collection("productdbvalue").find({id: { $gt :2} }).toArray();
+        console.log("Successfully Connected", result);
+        return result;
+    }
+
+    async function insertProduct(client , id){
+        const result = await client.db("product").collection("productdbvalue").insertMany(product);
+        console.log("Inserted successfully", result);
+        return result;
+    }
+
+//      //insert values to db product
+// async function insertProduct(client , product){
+//     const result = await client.db("product").collection("productdbvalue").insertMany(product);
+
+//     console.log(" Inserted successfully", result);
+// }
 
 createConnection();
 
@@ -149,16 +170,21 @@ app.get("/", (request, response)=>{
     response.send("Hello I am a Senior Developer in Google USA");
     });
 
-app.get("/user", (request, response)=>{
-        response.send(user);
-        });
+app.get("/product", async (request, response)=>{
+    const client = await  createConnection();
+   const products = await getProducts(client);
+    response.send(products);
+});
+
 
         
-app.get("/user/:id", (request, response)=>{
+app.get("/product/:id", async (request, response)=>{
     const id=request.params.id;
-    const contestant= user.filter((data)=>data.id === id);
-    console.log(id, contestant);
-    response.send(contestant);
+    // const contestant= user.filter((data)=>data.id === id);
+    // console.log(id, contestant);
+   const client = await  createConnection();
+   const product = await getProductById(client, id);
+    response.send(product);
     });
 
 
