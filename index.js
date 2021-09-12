@@ -1,4 +1,4 @@
-console.log("Hi Sangee is a software developer");
+console.log("Hi I am a software developer");
 
 const users=[
     {
