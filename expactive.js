@@ -1,7 +1,14 @@
-const express = require("express");
-const { MongoClient } = require("mongodb");
+import express from "express";
+import {MongoClient } from 'mongodb';
+import dotenv from 'dotenv';
+
+dotenv.config();
+//loaded in process.env
+
+// const express = require("express");
+// const { MongoClient } = require("mongodb");
 const app = express();
-const PORT=5000;
+const PORT = process.env.PORT;
 
 // const user=[
     
@@ -120,7 +127,7 @@ const product = [
 
 
 async function createConnection(){
-    const MONGO_URL = "mongodb+srv://sangeetha:sangeetha@cluster0.scjhy.mongodb.net/contestants?retryWrites=true&w=majority";
+    const MONGO_URL = process.env.MONGO_URI;
     const client = new MongoClient(MONGO_URL) ;
 
     try{
@@ -185,6 +192,12 @@ app.get("/product/name/:productname", async (request, response)=>{
     response.send(products);
 });
 
+app.get("/product/description/:search", async (request, response)=>{
+    const search = request.params.search;
+    const client = await  createConnection();
+   const products = await getProducts(client, { description: { $regex: search, $options: "i" }, });
+    response.send(products);
+});
         
 app.get("/product/:id", async (request, response)=>{
     const id=request.params.id;
