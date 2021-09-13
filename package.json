@@ -19,7 +19,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "start": "nodemon expactive.js"
+    "start": "node expactive.js",
+      "dev": "nodemon expactive.js"
   },
   "eslintConfig": {
     "extends": [
