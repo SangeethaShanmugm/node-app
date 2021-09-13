@@ -1,7 +1,9 @@
 import express from "express";
 import {MongoClient } from 'mongodb';
 import dotenv from 'dotenv';
-
+import { getProducts, getProductById, deleteProductById, insertProduct } from "./helper.js";
+import  { productRouter } from './routes/product.js';
+ 
 dotenv.config();
 //loaded in process.env
 
@@ -11,6 +13,7 @@ const app = express();
 const PORT = process.env.PORT;
 //change port as well
 app.use(express.json());
+
 // const user=[
     
 //         {
@@ -125,8 +128,6 @@ const product = [
    ];
    
 
-
-
 async function createConnection(){
     const MONGO_URL = process.env.MONGO_URI;
     const client = new MongoClient(MONGO_URL) ;
@@ -144,32 +145,6 @@ async function createConnection(){
     }
     }
 
-    //Find the id
-    async function getProductById(client , id){
-        const result = await client.db("product").collection("productdbvalue").findOne({ id : id});
-        console.log("Successfully Connected", result);
-        return result;
-    }
-
-    //delete data by id
-    async function deleteProductById(client , id){
-        const result = await client.db("product").collection("productdbvalue").deleteOne({ id : id});
-        console.log("Successfully Connected", result);
-        return result;
-    }
-
-    async function getProducts(client , filter){
-        const result = await client.db("product").collection("productdbvalue").find(filter).toArray();
-        console.log("Successfully Connected", result);
-        return result;
-    }
-
-    async function insertProduct(client , product){
-        const result = await client.db("product").collection("productdbvalue").insertMany(product);
-        console.log("Inserted successfully", result);
-        return result;
-    }
-
 //      //insert values to db product
 // async function insertProduct(client , product){
 //     const result = await client.db("product").collection("productdbvalue").insertMany(product);
@@ -177,7 +152,7 @@ async function createConnection(){
 //     console.log(" Inserted successfully", result);
 // }
 
-createConnection();
+//createConnection();
 
 //Todo
 
@@ -185,59 +160,8 @@ app.get("/", (request, response)=>{
     response.send("Hello I am a Senior Developer in Google USA");
     });
 
-app.get("/product", async (request, response)=>{
-    const client = await  createConnection();
-   const products = await getProducts(client, { });
-    response.send(products);
-});
-
-//search by name
-
-app.get("/product/name/:productname", async (request, response)=>{
-    const productname= request.params.productname;
-    const client = await  createConnection();
-   const products = await getProducts(client, { product : productname});
-    response.send(products);
-});
-
-app.get("/product/description/:search", async (request, response)=>{
-    const search = request.params.search;
-    const client = await  createConnection();
-   const products = await getProducts(client, { description: { $regex: search, $options: "i" }, });
-    response.send(products);
-});
-        
-app.get("/product/:id", async (request, response)=>{
-    const id=request.params.id;
-    console.log(id);
-    // const contestant= user.filter((data)=>data.id === id);
-    // console.log(id, contestant);
-   const client = await  createConnection();
-   const product = await getProductById(client, +id);
-    response.send(product);
-    });
-
-//delete
-
-    app.delete("/product/:id", async (request, response)=>{
-        const id=request.params.id;
-        console.log(id);
-        // const contestant= user.filter((data)=>data.id === id);
-        // console.log(id, contestant);
-       const client = await  createConnection();
-       const product = await deleteProductById(client, +id);
-        response.send(product);
-        });
-
-//POST method
-
-app.post("/product", async (request, response)=>{
-
-    const client = await  createConnection();
-    const product = request.body;
-   const products = await insertProduct(client, product);
-    response.send(products);
-});
+app.use('/product', productRouter );
+// '/product:id',
 
 
-    app.listen(PORT, () => console.log("The Server is started in", PORT));
+app.listen(PORT, () => console.log("The Server is started in", PORT));
