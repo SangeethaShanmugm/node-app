@@ -10,7 +10,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT;
 //change port as well
-
+app.use(express.json());
 // const user=[
     
 //         {
@@ -151,13 +151,20 @@ async function createConnection(){
         return result;
     }
 
+    //delete data by id
+    async function deleteProductById(client , id){
+        const result = await client.db("product").collection("productdbvalue").deleteOne({ id : id});
+        console.log("Successfully Connected", result);
+        return result;
+    }
+
     async function getProducts(client , filter){
         const result = await client.db("product").collection("productdbvalue").find(filter).toArray();
         console.log("Successfully Connected", result);
         return result;
     }
 
-    async function insertProduct(client , id){
+    async function insertProduct(client , product){
         const result = await client.db("product").collection("productdbvalue").insertMany(product);
         console.log("Inserted successfully", result);
         return result;
@@ -202,12 +209,35 @@ app.get("/product/description/:search", async (request, response)=>{
         
 app.get("/product/:id", async (request, response)=>{
     const id=request.params.id;
+    console.log(id);
     // const contestant= user.filter((data)=>data.id === id);
     // console.log(id, contestant);
    const client = await  createConnection();
-   const product = await getProductById(client, id);
+   const product = await getProductById(client, +id);
     response.send(product);
     });
+
+//delete
+
+    app.delete("/product/:id", async (request, response)=>{
+        const id=request.params.id;
+        console.log(id);
+        // const contestant= user.filter((data)=>data.id === id);
+        // console.log(id, contestant);
+       const client = await  createConnection();
+       const product = await deleteProductById(client, +id);
+        response.send(product);
+        });
+
+//POST method
+
+app.post("/product", async (request, response)=>{
+
+    const client = await  createConnection();
+    const product = request.body;
+   const products = await insertProduct(client, product);
+    response.send(products);
+});
 
 
     app.listen(PORT, () => console.log("The Server is started in", PORT));
