@@ -1,5 +1,6 @@
 import express from "express";
 import {MongoClient } from 'mongodb';
+import bcrypt from 'bcrypt';
 import dotenv from 'dotenv';
 import { getProducts, getProductById, deleteProductById, insertProduct } from "./helper.js";
 import  { productRouter } from './routes/product.js';
@@ -167,3 +168,11 @@ app.use('/product', productRouter );
 
 
 app.listen(PORT, () => console.log("The Server is started in", PORT));
+
+async function genPassword(password){
+    // const password = 'password@123';
+    const salt = await bcrypt.genSalt(10); //More rounds more secure -downside it takes longtime - user will nt patient
+    const hashedpassword  = await bcrypt.hash(password, salt);
+    console.log(hashedpassword);
+}
+genPassword("password@123");
