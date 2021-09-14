@@ -1,16 +1,26 @@
-import { getProducts, getProductById, deleteProductById, insertProduct } from "../helper.js";
+import { getProducts, getProductById, deleteProductById, insertProduct, insertUser, getUsers } from "../helper.js";
 import bcrypt from 'bcrypt';
 import { createConnection } from '../expactive.js';
 import express from 'express';
 const router = express.Router();
 
+//get all users
+
+router.route("/").get(async (request, response)=>{
+    const client = await  createConnection();
+    const products = await getUsers(client, {});
+    response.send(products);
+})
+
+
 // username and password--create a user by POST
 router.route("/signup").post(async (request, response)=>{
-    const {username, password} = request.body;
+    const {username, password, avatar} = request.body;
     const client = await  createConnection();
     const hashedPassword = await genPassword(password);
-    console.log(hashedPassword);
-    response.send(hashedPassword);
+    const newUser = await insertUser(client, {username: username,password: hashedPassword,avatar})
+    console.log(hashedPassword, newUser);
+    response.send(newUser);
 });
 
 

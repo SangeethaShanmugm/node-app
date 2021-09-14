@@ -15,8 +15,19 @@ export async function getProducts(client, filter) {
     console.log("Successfully Connected", result);
     return result;
 }
+
 export async function insertProduct(client, product) {
     const result = await client.db("product").collection("productdbvalue").insertMany(product);
     console.log("Inserted successfully", result);
+    return result;
+}
+export async function insertUser(client, user) {
+    const result = await client.db("product").collection("user").insertOne(user);
+    console.log("Inserted successfully", result);
+    return result;
+}
+export async function getUsers(client, filter) {
+    const result = await client.db("product").collection("user").find(filter).toArray();
+    console.log("Successfully Connected", result);
     return result;
 }
