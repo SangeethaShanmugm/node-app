@@ -128,7 +128,7 @@ const product = [
    ];
    
 
-async function createConnection(){
+export async function createConnection(){
     const MONGO_URL = process.env.MONGO_URI;
     const client = new MongoClient(MONGO_URL) ;
 
@@ -162,6 +162,8 @@ app.get("/", (request, response)=>{
 
 app.use('/product', productRouter );
 // '/product:id',
+// '/product/name/:productname',
+// '/product/description/:productdescription',
 
 
 app.listen(PORT, () => console.log("The Server is started in", PORT));
