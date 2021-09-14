@@ -1,4 +1,4 @@
-import { getProducts, getProductById, deleteProductById, insertProduct, insertUser, getUsers } from "../helper.js";
+import { getProducts, getProductById, deleteProductById, insertProduct, insertUser, getUsers, getUser } from "../helper.js";
 import bcrypt from 'bcrypt';
 import { createConnection } from '../expactive.js';
 import express from 'express';
@@ -20,7 +20,24 @@ router.route("/signup").post(async (request, response)=>{
     const hashedPassword = await genPassword(password);
     const newUser = await insertUser(client, {username: username,password: hashedPassword,avatar})
     console.log(hashedPassword, newUser);
-    response.send(newUser);
+    // response.send(newUser);
+});
+
+//login
+router.route("/login").post(async (request, response)=>{
+    const {username, password} = request.body;
+    const client = await  createConnection();
+    const user = await getUser(client, {username: username});
+    console.log(user);
+    const inDbStoredPassword = user.password;
+    const isPasswordMatch = await  bcrypt.compare(password, inDbStoredPassword);
+if(isPasswordMatch){
+    response.send({message: 'Successful login'});
+}
+else{
+    response.send({message: 'Invalid login'});
+}
+  
 });
 
 

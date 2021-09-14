@@ -31,3 +31,9 @@ export async function getUsers(client, filter) {
     console.log("Successfully Connected", result);
     return result;
 }
+
+export async function getUser(client, filter) {
+    const result = await client.db("product").collection("user").findOne(filter);
+    console.log("Successfully Connected", result);
+    return result;
+}
