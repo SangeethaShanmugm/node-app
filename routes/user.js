@@ -1,7 +1,10 @@
 import { getProducts, getProductById, deleteProductById, insertProduct, insertUser, getUsers, getUser } from "../helper.js";
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import { createConnection } from '../expactive.js';
 import express from 'express';
+
+
 const router = express.Router();
 
 //get all users
@@ -32,7 +35,9 @@ router.route("/login").post(async (request, response)=>{
     const inDbStoredPassword = user.password;
     const isPasswordMatch = await  bcrypt.compare(password, inDbStoredPassword);
 if(isPasswordMatch){
-    response.send({message: 'Successful login'});
+    //sign token
+    const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY)
+    response.send({message: 'Successful login', token: token});
 }
 else{
     response.send({message: 'Invalid login'});
