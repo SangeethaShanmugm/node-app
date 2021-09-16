@@ -1,4 +1,4 @@
-import { getProducts, getProductById, deleteProductById, insertProduct } from "../helper.js";
+import { getProducts, getProductById, deleteProductById, insertProduct, updateProductById} from "../helper.js";
 import { createConnection } from '../expactive.js';
 import { auth } from "../middleware/auth.js";
 import jwt from 'jsonwebtoken';
@@ -46,8 +46,9 @@ router.route("/:id").get(auth, async (request, response)=>{
     response.send(product);
     }).patch(auth, async (request, response)=>{
         const id=request.params.id;
+        const newproduct = request.body;
         const client = await  createConnection();
-       const product = await updateProductById(client, +id);
+       const product = await updateProductById(client, +id, newproduct);
         response.send(product);
         })
     

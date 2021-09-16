@@ -37,3 +37,9 @@ export async function getUser(client, filter) {
     console.log("Successfully Connected", result);
     return result;
 }
+
+export async function updateProductById(client, id, newproduct){
+    const result = await client.db("product").collection("productdbvalue").updateOne({ id: id }, {$set: newproduct});
+    console.log("Successfully Updated", result);
+    return result;
+}
