@@ -1,4 +1,5 @@
 import { getProducts, getProductById, deleteProductById, insertProduct, insertUser, getUsers, getUser } from "../helper.js";
+import { auth } from "../middleware/auth.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { createConnection } from '../expactive.js';
@@ -8,8 +9,8 @@ import express from 'express';
 const router = express.Router();
 
 //get all users
-
-router.route("/").get(async (request, response)=>{
+//auth is middleware to protect our route
+router.route("/").get(auth, async (request, response)=>{
     const client = await  createConnection();
     const products = await getUsers(client, {});
     response.send(products);
