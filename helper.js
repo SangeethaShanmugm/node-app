@@ -43,3 +43,11 @@ export async function updateProductById(client, id, newproduct){
     console.log("Successfully Updated", result);
     return result;
 }
+
+export async function replaceProductById(client, id, newproduct){
+    const result = await client.db("product").collection("productdbvalue").replaceOne({ id: id },newproduct);
+    console.log("Successfully Updated", result);
+    return result;
+}
+
+
