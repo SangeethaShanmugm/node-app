@@ -51,3 +51,42 @@ export async function replaceProductById(client, id, newproduct){
 }
 
 
+//poll data
+
+//Find the id
+export async function getPollById(client, id) {
+    const result = await client.db("contestants").collection("poll").findOne({ id: id });
+    console.log("Successfully Connected", result);
+    return result;
+}
+//delete data by id
+export async function deletePollById(client, id) {
+    const result = await client.db("contestants").collection("poll").deleteOne({ id: id });
+    console.log("Successfully Connected", result);
+    return result;
+}
+export async function getPolls(client, filter) {
+    const result = await client.db("contestants").collection("poll").find(filter).toArray();
+    console.log("Successfully Connected", result);
+    return result;
+}
+
+export async function insertPoll(client, product) {
+    const result = await client.db("contestants").collection("poll").insertMany(product);
+    console.log("Inserted successfully", result);
+    return result;
+}
+
+export async function updatePollById(client, id, newproduct){
+    const result = await client.db("contestants").collection("poll").updateOne({ id: id }, {$set: newproduct});
+    console.log("Successfully Updated", result);
+    return result;
+}
+
+export async function replacePollById(client, id, newproduct){
+    const result = await client.db("contestants").collection("poll").replaceOne({ id: id },newproduct);
+    console.log("Successfully Updated", result);
+    return result;
+}
+
+
